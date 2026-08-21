@@ -34,6 +34,10 @@ export const config = {
   ozApiKey: required("NYMOR_OZ_API_KEY"),
   sellerPayToAddress: required("NYMOR_SELLER_PAYTO_ADDRESS"),
   port: Number(process.env.NYMOR_RESOURCES_PORT ?? "3001"),
+  // Same file nymor-server's registry.ts reads/writes — GET /registry serves
+  // it read-only so nymor-dashboard doesn't need its own copy or its own
+  // path into the server package.
+  registryPath: required("NYMOR_REGISTRY_PATH"),
   // OpenRouter (OpenAI-compatible) powers /summarize with a free-tier model
   // so the resource makes a real LLM call at zero cost.
   openRouterApiKey: required("OPENROUTER_API_KEY"),
