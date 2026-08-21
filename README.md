@@ -25,7 +25,8 @@ Then, by hand (cannot be automated):
 2. Establish a USDC trustline on both (testnet USDC issuer:
    `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`).
 3. Get testnet USDC into the buyer account: https://faucet.circle.com
-4. Get a real `ANTHROPIC_API_KEY` and add it to `.env`.
+4. Get a free `OPENROUTER_API_KEY` at https://openrouter.ai/keys (no card
+   required for `:free` models) and add it to `.env`.
 
 ## Running
 

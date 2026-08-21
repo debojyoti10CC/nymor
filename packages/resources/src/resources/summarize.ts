@@ -1,10 +1,15 @@
 import type { Request, Response } from "express";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { z } from "zod";
 import { config } from "../config.js";
 import { logger } from "../logger.js";
 
-const anthropic = new Anthropic({ apiKey: config.anthropicApiKey });
+// OpenRouter exposes an OpenAI-compatible API; config.openRouterModel is a
+// ":free" model id so real inference happens at zero cost.
+const openRouter = new OpenAI({
+  apiKey: config.openRouterApiKey,
+  baseURL: "https://openrouter.ai/api/v1",
+});
 
 const requestSchema = z.object({
   text: z.string().min(1).max(20_000),
@@ -21,9 +26,12 @@ export async function summarizeHandler(req: Request, res: Response) {
   }
 
   try {
-    const message = await anthropic.messages.create({
-      model: "claude-sonnet-5",
-      max_tokens: 512,
+    const completion = await openRouter.chat.completions.create({
+      model: config.openRouterModel,
+      // The default free model is a reasoning model that spends tokens on
+      // internal reasoning before the final answer — 512 was too tight and
+      // left message.content empty. 1024 leaves headroom for both.
+      max_tokens: 1024,
       messages: [
         {
           role: "user",
@@ -32,15 +40,14 @@ export async function summarizeHandler(req: Request, res: Response) {
       ],
     });
 
-    const summary = message.content
-      .filter((block): block is Anthropic.TextBlock => block.type === "text")
-      .map((block) => block.text)
-      .join("\n")
-      .trim();
+    const summary = completion.choices[0]?.message?.content?.trim();
+    if (!summary) {
+      throw new Error("OpenRouter returned no summary content");
+    }
 
     res.json({ summary });
   } catch (err) {
-    logger.error({ err }, "summarize: upstream (Anthropic) failure");
+    logger.error({ err }, "summarize: upstream (OpenRouter) failure");
     res.status(503).json({ error: "upstream_unavailable" });
   }
 }

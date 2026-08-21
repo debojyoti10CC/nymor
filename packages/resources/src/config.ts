@@ -28,7 +28,10 @@ export const config = {
   ozApiKey: required("NYMOR_OZ_API_KEY"),
   sellerPayToAddress: required("NYMOR_SELLER_PAYTO_ADDRESS"),
   port: Number(process.env.NYMOR_RESOURCES_PORT ?? "3001"),
-  anthropicApiKey: required("ANTHROPIC_API_KEY"),
+  // OpenRouter (OpenAI-compatible) powers /summarize with a free-tier model
+  // so the resource makes a real LLM call at zero cost.
+  openRouterApiKey: required("OPENROUTER_API_KEY"),
+  openRouterModel: process.env.OPENROUTER_MODEL ?? "openai/gpt-oss-20b:free",
   logLevel: process.env.NYMOR_LOG_LEVEL ?? "info",
   logPath: process.env.NYMOR_LOG_PATH ?? "./nymor.log",
 };

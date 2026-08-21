@@ -5,7 +5,10 @@ import { ExactStellarScheme } from "@x402/stellar/exact/client";
 import { config } from "./config.js";
 import { NymorException } from "./errors.js";
 
-const PAYMENT_TIMEOUT_MS = 10_000;
+// x402 settlement alone takes ~5s (facilitator verify+submit on Stellar), and
+// the resource's own handler runs after that — a slow upstream (e.g. LLM
+// inference) adds on top. 10s was too tight for that combined round trip.
+const PAYMENT_TIMEOUT_MS = 30_000;
 
 const signer = createEd25519Signer(config.buyerPrivateKey, config.network);
 const coreClient = new x402Client().register(
@@ -63,7 +66,10 @@ export async function payAndFetch(
   } catch (err) {
     if (err instanceof NymorException) throw err;
     if (err instanceof Error && err.name === "AbortError") {
-      throw new NymorException({ code: "PAYMENT_FAILED", reason: "payment timed out after 10s" });
+      throw new NymorException({
+        code: "PAYMENT_FAILED",
+        reason: `payment timed out after ${PAYMENT_TIMEOUT_MS / 1000}s`,
+      });
     }
     throw new NymorException({
       code: "PAYMENT_FAILED",

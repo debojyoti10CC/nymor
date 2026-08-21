@@ -11,12 +11,12 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.30.0",
     "@x402/core": "^2.23.0",
     "@x402/express": "^2.23.0",
     "@x402/stellar": "^2.23.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
+    "openai": "^4.68.0",
     "pino": "^9.5.0",
     "zod": "^3.23.8"
   },

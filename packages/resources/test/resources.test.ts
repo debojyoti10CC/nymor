@@ -4,7 +4,7 @@ process.env.NYMOR_NETWORK = "stellar:testnet";
 process.env.NYMOR_STELLAR_RPC_URL = "https://soroban-testnet.stellar.org";
 process.env.NYMOR_FACILITATOR_URL = "https://example.invalid/facilitator";
 process.env.NYMOR_SELLER_PAYTO_ADDRESS = "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-process.env.ANTHROPIC_API_KEY = "sk-ant-test-key";
+process.env.OPENROUTER_API_KEY = "sk-or-v1-test-key";
 
 const { xlmPriceHandler } = await import("../src/resources/xlmPrice.js");
 const { summarizeHandler } = await import("../src/resources/summarize.js");
@@ -63,7 +63,7 @@ describe("xlmPriceHandler", () => {
 });
 
 describe("summarizeHandler", () => {
-  it("rejects text over 20,000 chars with 400 before calling Anthropic", async () => {
+  it("rejects text over 20,000 chars with 400 before calling OpenRouter", async () => {
     const res = mockRes();
     await summarizeHandler({ body: { text: "a".repeat(20_001) } } as any, res);
 
