@@ -1,6 +1,10 @@
 node_modules/
 dist/
 .env
+.env.local
+target/
+.refs/
+test_snapshots/
 *.key
 nymor.ledger.json
 nymor.log
