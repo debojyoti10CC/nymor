@@ -1,3 +1,8 @@
+<p align="center">
+<img width="320" height="320" alt="NEX (22)" src="https://github.com/user-attachments/assets/4cf21779-6731-4f1e-b225-f508493cb852" />
+
+</p>
+
 <h1 align="center">Nymor</h1>
 
 <p align="center">
@@ -10,20 +15,6 @@
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-server-1A2236?style=flat-square" alt="MCP" /></a>
   <a href="https://github.com/debojyoti10CC/nymor"><img src="https://img.shields.io/badge/repo-nymor-1A2236?style=flat-square&logo=github" alt="GitHub" /></a>
 </p>
-
----
-
-## The 30-Second Version
-
-Every framework that lets an AI agent spend money says "don't worry, there's a budget." Almost none of them can show you the moment that budget actually got enforced — because the enforcement is a number checked in application code, sitting in the exact same trust boundary as the agent it's supposed to be restraining. If the agent's own logic is ever wrong, compromised, or just cleverly prompted, that budget was never a wall. It was a Post-it note.
-
-So we deployed a Soroban smart account on Stellar, pointed a real AI-agent payment flow at it, and tried to make it overspend. We signed a transaction by hand — reverse-engineering an authorization scheme so undocumented that OpenZeppelin's own SDK admits it "requires manual authorization entry crafting" and ships zero reference code for it — and pushed it straight at the contract.
-
-**The network rejected it.** Not a test assertion. Not a mocked response. A real transaction, submitted to Stellar testnet, bounced back with `Error(Contract, #3221): SpendingLimitExceeded` — [check it yourself](https://stellar.expert/explorer/testnet/tx/d0f3e128df2bd2d2582a532c32e119dedd1957afdaa79f50412eebca76965f74). Then we sent a smaller one and watched it clear. Two transactions, one contract, zero ambiguity about which one the chain lets through.
-
-That's Nymor: an MCP server that lets any AI agent discover paid APIs, pay for them in real USDC over x402, and hit a spend cap it is *structurally incapable* of talking its way past — because the "no" doesn't come from the agent's own code anymore. It comes from the network.
-
-Everything below is receipts, not adjectives. Six claims, each with a transaction hash or a test file. One gap, disclosed on purpose instead of buried.
 
 ---
 
