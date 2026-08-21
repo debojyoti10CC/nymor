@@ -1,0 +1,75 @@
+import { wrapFetchWithPayment } from "@x402/fetch";
+import { x402Client, x402HTTPClient } from "@x402/core/client";
+import { createEd25519Signer } from "@x402/stellar";
+import { ExactStellarScheme } from "@x402/stellar/exact/client";
+import { config } from "./config.js";
+import { NymorException } from "./errors.js";
+
+const PAYMENT_TIMEOUT_MS = 10_000;
+
+const signer = createEd25519Signer(config.buyerPrivateKey, config.network);
+const coreClient = new x402Client().register(
+  "stellar:*",
+  new ExactStellarScheme(signer, { url: config.stellarRpcUrl }),
+);
+const httpClient = new x402HTTPClient(coreClient);
+const fetchWithPayment = wrapFetchWithPayment(fetch, httpClient);
+
+export interface PayAndFetchResult {
+  data: unknown;
+  stellarTxHash: string;
+}
+
+/**
+ * Performs the real x402 buyer flow: request -> 402 -> sign -> pay -> retry.
+ * Throws a typed NymorException (PAYMENT_FAILED / UPSTREAM_UNAVAILABLE) on
+ * any ambiguity, since "did the payment settle" must never be swallowed.
+ */
+export async function payAndFetch(
+  resourceId: string,
+  url: string,
+  method: "GET" | "POST",
+  body?: unknown,
+): Promise<PayAndFetchResult> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), PAYMENT_TIMEOUT_MS);
+
+  try {
+    const response = await fetchWithPayment(url, {
+      method,
+      headers: body ? { "Content-Type": "application/json" } : undefined,
+      body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new NymorException({
+        code: "UPSTREAM_UNAVAILABLE",
+        resource_id: resourceId,
+      });
+    }
+
+    const settlement = httpClient.getPaymentSettleResponse((name) => response.headers.get(name));
+    const stellarTxHash = settlement?.transaction;
+    if (!stellarTxHash) {
+      throw new NymorException({
+        code: "PAYMENT_FAILED",
+        reason: "no settlement transaction hash returned by facilitator",
+      });
+    }
+
+    const data = await response.json();
+    return { data, stellarTxHash };
+  } catch (err) {
+    if (err instanceof NymorException) throw err;
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new NymorException({ code: "PAYMENT_FAILED", reason: "payment timed out after 10s" });
+    }
+    throw new NymorException({
+      code: "PAYMENT_FAILED",
+      reason: err instanceof Error ? err.message : String(err),
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+}

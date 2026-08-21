@@ -1,0 +1,22 @@
+{
+  "resources": [
+    {
+      "id": "xlm-price",
+      "name": "Live XLM/USD Price",
+      "description": "Real-time Stellar Lumens price in USD, sourced from CoinGecko.",
+      "url": "http://localhost:3001/xlm-price",
+      "method": "GET",
+      "price_usd": 0.01,
+      "network": "stellar:testnet"
+    },
+    {
+      "id": "summarize",
+      "name": "Text Summarization",
+      "description": "Summarizes arbitrary text using Claude.",
+      "url": "http://localhost:3001/summarize",
+      "method": "POST",
+      "price_usd": 0.02,
+      "network": "stellar:testnet"
+    }
+  ]
+}

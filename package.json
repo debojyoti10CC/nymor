@@ -1,0 +1,21 @@
+{
+  "name": "nymor",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "dev:resources": "pnpm --filter @nymor/resources dev",
+    "dev:server": "pnpm --filter @nymor/server dev",
+    "setup:accounts": "tsx scripts/setup-testnet-accounts.ts",
+    "demo": "tsx demo/run-demo.ts"
+  },
+  "devDependencies": {
+    "turbo": "^2.1.0",
+    "typescript": "^5.6.0",
+    "tsx": "^4.19.0",
+    "vitest": "^2.1.0",
+    "@types/node": "^22.7.0"
+  }
+}
