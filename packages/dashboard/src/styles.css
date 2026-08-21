@@ -1,0 +1,163 @@
+:root {
+  color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0b0d12;
+  color: #e6e8ec;
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  margin: 0 0 0.25rem;
+}
+
+.app-header p {
+  color: #9aa2af;
+  margin: 0 0 2rem;
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .app-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .app-grid .panel:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+.panel {
+  background: #12151c;
+  border: 1px solid #232732;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.panel h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.panel-sub {
+  color: #9aa2af;
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.muted {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #f87171;
+  font-size: 0.9rem;
+}
+
+.resource-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.resource-card {
+  border: 1px solid #232732;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.resource-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-weight: 600;
+}
+
+.resource-price {
+  color: #4ade80;
+}
+
+.resource-desc {
+  color: #9aa2af;
+  font-size: 0.9rem;
+  margin: 0.35rem 0;
+}
+
+.resource-endpoint {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.activity-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.activity-row {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  border-bottom: 1px solid #1c1f28;
+  padding-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.activity-amount {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.activity-time {
+  color: #6b7280;
+}
+
+.activity-link {
+  margin-left: auto;
+  color: #60a5fa;
+}
+
+.btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.call-result pre {
+  background: #0b0d12;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  overflow-x: auto;
+}
