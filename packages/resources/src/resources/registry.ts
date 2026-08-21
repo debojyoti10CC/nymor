@@ -11,7 +11,6 @@ export async function registryHandler(_req: Request, res: Response): Promise<voi
   try {
     const raw = await readFile(config.registryPath, "utf-8");
     res.setHeader("Content-Type", "application/json");
-    res.setHeader("Access-Control-Allow-Origin", "*");
     res.send(raw);
   } catch (err) {
     logger.error({ err }, "registry: failed to read registry file");
