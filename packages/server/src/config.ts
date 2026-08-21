@@ -1,4 +1,11 @@
-import "dotenv/config";
+import { config as loadDotenv } from "dotenv";
+import { fileURLToPath } from "node:url";
+
+// MCP clients spawn this process with an unpredictable working directory
+// (varies by client, launch method, OS) — relying on dotenv's default
+// process.cwd() lookup silently loads no .env at all in that case. Anchor
+// to the repo root (two levels up from packages/server/src) explicitly.
+loadDotenv({ path: fileURLToPath(new URL("../../../.env", import.meta.url)) });
 
 function required(name: string): string {
   const value = process.env[name];

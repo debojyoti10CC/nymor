@@ -35,15 +35,28 @@ pnpm dev:resources   # starts the seller on NYMOR_RESOURCES_PORT (3001)
 pnpm dev:server      # starts the MCP server over stdio
 ```
 
-Add `nymor-server` to your MCP client config pointing at
-`packages/server/dist/index.js` (after `pnpm build`) or `src/index.ts` via
-`tsx` for development.
+`.mcp.json` in the repo root already wires `nymor-server` up for Claude Code
+(project-scoped, points at `packages/server/dist/index.js` — run `pnpm build`
+first). No secrets go in that file; `config.ts` loads `.env` by an absolute
+path anchored to the repo root regardless of what working directory the MCP
+client launches the process from, so it works the same way in Claude Code,
+Claude Desktop, or any other MCP client. Restart your MCP client session
+after adding/changing `.mcp.json` to pick it up, then sanity-check with "what
+paid resources does nymor know about?" — it should call `nymor.discover` and
+list both resources.
+
+For other MCP clients, point them at the same command:
+`node packages/server/dist/index.js`.
 
 ## Testing
 
 ```bash
 pnpm test                              # unit tests, no network
-RUN_INTEGRATION=1 pnpm test            # also runs the real testnet payment test
+RUN_INTEGRATION=1 pnpm test            # also runs the real testnet payment
+                                        # test and a real MCP stdio protocol
+                                        # test (spawns the built server and
+                                        # drives it exactly as a real MCP
+                                        # client would, not a direct import)
 ```
 
 ## Demo

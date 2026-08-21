@@ -1,4 +1,10 @@
-import "dotenv/config";
+import { config as loadDotenv } from "dotenv";
+import { fileURLToPath } from "node:url";
+
+// Anchor to the repo root explicitly rather than relying on dotenv's default
+// process.cwd() lookup, which varies depending on how this process is
+// launched (npm script, tsx, a process manager, etc).
+loadDotenv({ path: fileURLToPath(new URL("../../../.env", import.meta.url)) });
 
 function required(name: string): string {
   const value = process.env[name];

@@ -34,7 +34,7 @@ const DEFAULT_REGISTRY: z.infer<typeof registryFileSchema> = {
     {
       id: "summarize",
       name: "Text Summarization",
-      description: "Summarizes arbitrary text using Claude.",
+      description: "Summarizes arbitrary text using a real LLM (OpenRouter).",
       url: "http://localhost:3001/summarize",
       method: "POST",
       price_usd: 0.02,
