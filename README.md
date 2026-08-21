@@ -8,9 +8,10 @@ Soroban contract the Stellar network itself refuses to let overspend.
 
 ## Packages
 
-- `packages/resources` (`@nymor/resources`) — seller side: two real paid
-  endpoints (`GET /xlm-price`, `POST /summarize`) gated by x402, plus a
-  read-only `GET /registry` for the dashboard.
+- `packages/resources` (`@nymor/resources`) — seller side: five real paid
+  resources (live price data, LLM summarization, a Stellar balance lookup,
+  image generation, and weather) gated by x402, plus a read-only
+  `GET /registry` for the dashboard. See `packages/resources/README.md`.
 - `packages/server` (`@nymor/server`) — the product: an MCP server exposing
   `nymor.discover`, `nymor.pay_and_call`, `nymor.spend_status`,
   `nymor.register_resource`, backed by a file-persisted registry and ledger.
@@ -79,6 +80,6 @@ is enforced correctly; see `packages/policy/README.md`.
 ## Going to mainnet
 
 Flip `NYMOR_NETWORK` to `stellar:pubnet`, rotate to a freshly generated buyer
-key, add rate limiting to `nymor-resources`, tighten `nymor-resources`' CORS
-policy from a wildcard to an explicit allowlist, deploy `nymor-policy` on
+key, add rate limiting to `nymor-resources`, add `nymor-dashboard`'s real
+deployed origin to `NYMOR_CORS_ALLOWED_ORIGINS`, deploy `nymor-policy` on
 mainnet, and lower `NYMOR_SESSION_CAP_USD` for first users.
