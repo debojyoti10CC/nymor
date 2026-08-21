@@ -61,7 +61,17 @@ export async function payAndFetch(
       });
     }
 
-    const data = await response.json();
+    // Not every resource returns JSON — generate-image returns raw image
+    // bytes. Parse by content type rather than assuming JSON, since a
+    // mismatch here throws away a payment that already settled (found by
+    // actually paying for a binary resource end-to-end, not assumed).
+    const contentType = response.headers.get("content-type") ?? "";
+    const data = contentType.includes("application/json")
+      ? await response.json()
+      : {
+          contentType,
+          base64: Buffer.from(await response.arrayBuffer()).toString("base64"),
+        };
     return { data, stellarTxHash };
   } catch (err) {
     if (err instanceof NymorException) throw err;

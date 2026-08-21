@@ -50,6 +50,15 @@ const DEFAULT_REGISTRY: z.infer<typeof registryFileSchema> = {
       price_usd: 0.01,
       network: "stellar:testnet",
     },
+    {
+      id: "generate-image",
+      name: "AI Image Generation",
+      description: "Generates a real image from a text prompt via Pollinations.ai. Returns image bytes.",
+      url: "http://localhost:3001/generate-image",
+      method: "POST",
+      price_usd: 0.03,
+      network: "stellar:testnet",
+    },
   ],
 };
 

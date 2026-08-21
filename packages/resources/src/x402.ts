@@ -29,6 +29,14 @@ export const paymentMiddleware = paymentMiddlewareFromConfig(
         payTo: config.sellerPayToAddress,
       },
     },
+    "POST /generate-image": {
+      accepts: {
+        scheme: "exact",
+        price: "$0.03",
+        network: config.network,
+        payTo: config.sellerPayToAddress,
+      },
+    },
   },
   new HTTPFacilitatorClient({
     url: config.facilitatorUrl,
