@@ -41,6 +41,9 @@ importers:
       '@x402/stellar':
         specifier: ^2.23.0
         version: 2.23.0
+      buffer:
+        specifier: ^6.0.3
+        version: 6.0.3
       react:
         specifier: ^18.3.1
         version: 18.3.1
