@@ -5,10 +5,18 @@ resources, pay for them autonomously in USDC settled on Stellar via the
 x402 protocol, and stay inside a persisted spend-policy budget.
 
 - `packages/resources` (`@nymor/resources`) — seller side: two real paid
-  endpoints (`GET /xlm-price`, `POST /summarize`) gated by x402.
+  endpoints (`GET /xlm-price`, `POST /summarize`) gated by x402, plus a
+  read-only `GET /registry` for the dashboard.
 - `packages/server` (`@nymor/server`) — the product: an MCP server exposing
   `nymor.discover`, `nymor.pay_and_call`, `nymor.spend_status`,
   `nymor.register_resource`, backed by a file-persisted registry and ledger.
+- `packages/policy` (`nymor-account`, `nymor-spending-limit-policy`) — Soroban
+  smart-account contracts, deployed live on testnet, that enforce a spend cap
+  at the network level. See `packages/policy/README.md`.
+- `packages/dashboard` (`@nymor/dashboard`) — a public web app: browse the
+  registry, watch real payments land in a live feed, and pay for a resource
+  yourself with Freighter — no AI agent required. See
+  `packages/dashboard/README.md`.
 - `demo/run-demo.ts` — scripted end-to-end proof run.
 
 ## Setup
@@ -33,6 +41,7 @@ Then, by hand (cannot be automated):
 ```bash
 pnpm dev:resources   # starts the seller on NYMOR_RESOURCES_PORT (3001)
 pnpm dev:server      # starts the MCP server over stdio
+pnpm dev:dashboard   # starts the public dashboard on :5173 (see packages/dashboard/README.md)
 ```
 
 `.mcp.json` in the repo root already wires `nymor-server` up for Claude Code
