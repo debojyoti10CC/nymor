@@ -40,6 +40,16 @@ const DEFAULT_REGISTRY: z.infer<typeof registryFileSchema> = {
       price_usd: 0.02,
       network: "stellar:testnet",
     },
+    {
+      id: "stellar-balance",
+      name: "Stellar Account Balance",
+      description:
+        "Looks up a Stellar testnet account's real balances via Horizon. Requires an ?address=G... query parameter.",
+      url: "http://localhost:3001/stellar-balance",
+      method: "GET",
+      price_usd: 0.01,
+      network: "stellar:testnet",
+    },
   ],
 };
 

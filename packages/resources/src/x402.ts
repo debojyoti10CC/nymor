@@ -21,6 +21,14 @@ export const paymentMiddleware = paymentMiddlewareFromConfig(
         payTo: config.sellerPayToAddress,
       },
     },
+    "GET /stellar-balance": {
+      accepts: {
+        scheme: "exact",
+        price: "$0.01",
+        network: config.network,
+        payTo: config.sellerPayToAddress,
+      },
+    },
   },
   new HTTPFacilitatorClient({
     url: config.facilitatorUrl,
