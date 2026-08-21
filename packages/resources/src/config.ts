@@ -38,6 +38,14 @@ export const config = {
   // it read-only so nymor-dashboard doesn't need its own copy or its own
   // path into the server package.
   registryPath: required("NYMOR_REGISTRY_PATH"),
+  // Explicit allowlist rather than "*" — nymor-dashboard is the only browser
+  // client that needs to call these routes directly. Comma-separated;
+  // defaults to the dashboard's local dev origin so `pnpm dev:dashboard`
+  // keeps working out of the box.
+  corsAllowedOrigins: (process.env.NYMOR_CORS_ALLOWED_ORIGINS ?? "http://localhost:5173")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
   // OpenRouter (OpenAI-compatible) powers /summarize with a free-tier model
   // so the resource makes a real LLM call at zero cost.
   openRouterApiKey: required("OPENROUTER_API_KEY"),

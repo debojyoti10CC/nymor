@@ -22,7 +22,11 @@ app.use(express.json());
 // requirements at all, and a real payment would settle but read back as a
 // failure.
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  const origin = req.headers.origin;
+  if (origin && config.corsAllowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  }
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   // @x402/fetch (v2.23.0) sets Access-Control-Expose-Headers on the *request*
   // it sends after signing a payment — a response-only header per the CORS
