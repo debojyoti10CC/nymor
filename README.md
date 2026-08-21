@@ -2,7 +2,11 @@
 
 An MCP server that lets any MCP-connected AI agent discover paid API
 resources, pay for them autonomously in USDC settled on Stellar via the
-x402 protocol, and stay inside a persisted spend-policy budget.
+x402 protocol, and stay inside a spend budget — enforced both by a
+persisted application-level ledger and, for the buyer's smart account, by a
+Soroban contract the Stellar network itself refuses to let overspend.
+
+## Packages
 
 - `packages/resources` (`@nymor/resources`) — seller side: two real paid
   endpoints (`GET /xlm-price`, `POST /summarize`) gated by x402, plus a
@@ -12,12 +16,13 @@ x402 protocol, and stay inside a persisted spend-policy budget.
   `nymor.register_resource`, backed by a file-persisted registry and ledger.
 - `packages/policy` (`nymor-account`, `nymor-spending-limit-policy`) — Soroban
   smart-account contracts, deployed live on testnet, that enforce a spend cap
-  at the network level. See `packages/policy/README.md`.
+  at the network level. See `packages/policy/README.md` for the deployed
+  contract addresses and two real, independently verifiable proof
+  transactions.
 - `packages/dashboard` (`@nymor/dashboard`) — a public web app: browse the
-  registry, watch real payments land in a live feed, and pay for a resource
-  yourself with Freighter — no AI agent required. See
-  `packages/dashboard/README.md`.
-- `demo/run-demo.ts` — scripted end-to-end proof run.
+  registry, watch real payments land in a live feed, read the live on-chain
+  spend cap, and pay for a resource yourself with Freighter — no AI agent
+  required. See `packages/dashboard/README.md`.
 
 ## Setup
 
@@ -52,7 +57,7 @@ client launches the process from, so it works the same way in Claude Code,
 Claude Desktop, or any other MCP client. Restart your MCP client session
 after adding/changing `.mcp.json` to pick it up, then sanity-check with "what
 paid resources does nymor know about?" — it should call `nymor.discover` and
-list both resources.
+list the available resources.
 
 For other MCP clients, point them at the same command:
 `node packages/server/dist/index.js`.
@@ -68,12 +73,12 @@ RUN_INTEGRATION=1 pnpm test            # also runs the real testnet payment
                                         # client would, not a direct import)
 ```
 
-## Demo
-
-See `demo/README.md`.
+`packages/policy` has its own Rust test suite proving the on-chain spend cap
+is enforced correctly; see `packages/policy/README.md`.
 
 ## Going to mainnet
 
-See Phase 6 in the original build spec: flip `NYMOR_NETWORK` to
-`stellar:pubnet`, rotate to a freshly generated buyer key, add rate limiting
-to `nymor-resources`, and lower `NYMOR_SESSION_CAP_USD` for first users.
+Flip `NYMOR_NETWORK` to `stellar:pubnet`, rotate to a freshly generated buyer
+key, add rate limiting to `nymor-resources`, tighten `nymor-resources`' CORS
+policy from a wildcard to an explicit allowlist, deploy `nymor-policy` on
+mainnet, and lower `NYMOR_SESSION_CAP_USD` for first users.

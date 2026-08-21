@@ -9,8 +9,7 @@
     "dev:resources": "pnpm --filter @nymor/resources dev",
     "dev:server": "pnpm --filter @nymor/server dev",
     "dev:dashboard": "pnpm --filter @nymor/dashboard dev",
-    "setup:accounts": "tsx scripts/setup-testnet-accounts.ts",
-    "demo": "tsx demo/run-demo.ts"
+    "setup:accounts": "tsx scripts/setup-testnet-accounts.ts"
   },
   "devDependencies": {
     "turbo": "^2.1.0",
