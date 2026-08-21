@@ -1,6 +1,7 @@
 import { Marketplace } from "./Marketplace.js";
 import { LiveActivity } from "./LiveActivity.js";
 import { TryItYourself } from "./TryItYourself.js";
+import { OnChainPolicy } from "./OnChainPolicy.js";
 
 export function App() {
   return (
@@ -12,6 +13,7 @@ export function App() {
       <main className="app-grid">
         <Marketplace />
         <LiveActivity />
+        <OnChainPolicy />
         <TryItYourself />
       </main>
     </div>

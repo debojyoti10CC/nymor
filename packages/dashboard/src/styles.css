@@ -35,7 +35,7 @@ body {
   .app-grid {
     grid-template-columns: 1fr 1fr;
   }
-  .app-grid .panel:last-child {
+  .app-grid .panel:nth-last-child(-n + 2) {
     grid-column: 1 / -1;
   }
 }
@@ -160,4 +160,71 @@ body {
   padding: 0.5rem;
   font-size: 0.8rem;
   overflow-x: auto;
+}
+
+.policy-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.policy-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid #1c1f28;
+  padding-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.policy-label {
+  color: #9aa2af;
+}
+
+.policy-row a {
+  color: #60a5fa;
+  font-family: monospace;
+}
+
+.policy-proof-heading {
+  font-size: 0.9rem;
+  color: #9aa2af;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.policy-proof-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.policy-proof-list a {
+  color: #60a5fa;
+}
+
+.proof-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.proof-badge-ok {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+}
+
+.proof-badge-rejected {
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
 }

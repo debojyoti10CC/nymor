@@ -21,4 +21,13 @@ export const config = {
   networkPassphrase: required("VITE_STELLAR_NETWORK_PASSPHRASE"),
   network: requiredCaip2Network("VITE_STELLAR_NETWORK"),
   sellerPayToAddress: required("VITE_SELLER_PAYTO_ADDRESS"),
+  // nymor-policy: deployed once via `stellar contract deploy`, not
+  // per-buyer — see packages/policy/README.md for the deploy record.
+  policyContractId: required("VITE_SPENDING_LIMIT_POLICY_CONTRACT_ID"),
+  accountContractId: required("VITE_NYMOR_ACCOUNT_CONTRACT_ID"),
+  accountContextRuleId: Number(import.meta.env.VITE_NYMOR_ACCOUNT_CONTEXT_RULE_ID ?? "0"),
+  // Real testnet transactions from packages/server/scripts/onchain-proof.mjs
+  // — see packages/policy/README.md's "Enforcement proof" section.
+  proofTxUnderCap: required("VITE_PROOF_TX_UNDER_CAP"),
+  proofTxOverCap: required("VITE_PROOF_TX_OVER_CAP"),
 };
