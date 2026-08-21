@@ -59,6 +59,16 @@ const DEFAULT_REGISTRY: z.infer<typeof registryFileSchema> = {
       price_usd: 0.03,
       network: "stellar:testnet",
     },
+    {
+      id: "weather",
+      name: "Current Weather",
+      description:
+        "Real current weather for a location via Open-Meteo. Requires ?lat=&lon= query parameters.",
+      url: "http://localhost:3001/weather",
+      method: "GET",
+      price_usd: 0.01,
+      network: "stellar:testnet",
+    },
   ],
 };
 

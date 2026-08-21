@@ -7,6 +7,7 @@ import { summarizeHandler } from "./resources/summarize.js";
 import { registryHandler } from "./resources/registry.js";
 import { stellarBalanceHandler } from "./resources/stellarBalance.js";
 import { generateImageHandler } from "./resources/generateImage.js";
+import { weatherHandler } from "./resources/weather.js";
 
 const app = express();
 app.use(express.json());
@@ -63,6 +64,7 @@ app.get("/xlm-price", xlmPriceHandler);
 app.post("/summarize", summarizeHandler);
 app.get("/stellar-balance", stellarBalanceHandler);
 app.post("/generate-image", generateImageHandler);
+app.get("/weather", weatherHandler);
 
 app.listen(config.port, () => {
   logger.info({ port: config.port }, "nymor-resources listening");
