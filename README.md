@@ -5,10 +5,17 @@
 </p>
 
 <p align="center">
+  <a href="https://nymor.xyz"><img src="https://img.shields.io/badge/website-nymor.xyz-E5484D?style=flat-square" alt="Website" /></a>
+  <a href="https://docs.nymor.xyz"><img src="https://img.shields.io/badge/docs-docs.nymor.xyz-E5484D?style=flat-square" alt="Docs" /></a>
   <a href="https://developers.stellar.org/docs/build/agentic-payments/x402"><img src="https://img.shields.io/badge/protocol-x402-22D68B?style=flat-square" alt="x402" /></a>
   <a href="https://stellar.expert/explorer/testnet/contract/CAF2HV5N57UDZOMGD2WC4BI472Z3CRSQYQ2V4AKPPP5W4PD4HC4LBKVW"><img src="https://img.shields.io/badge/on--chain%20policy-deployed%20%26%20proven-1A2236?style=flat-square" alt="On-chain policy" /></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-server-1A2236?style=flat-square" alt="MCP" /></a>
   <a href="https://github.com/debojyoti10CC/nymor"><img src="https://img.shields.io/badge/repo-nymor-1A2236?style=flat-square&logo=github" alt="GitHub" /></a>
+</p>
+
+<p align="center">
+  <a href="https://nymor.xyz"><strong>nymor.xyz</strong></a> — landing page &nbsp;·&nbsp;
+  <a href="https://docs.nymor.xyz"><strong>docs.nymor.xyz</strong></a> — full documentation
 </p>
 
 ---
@@ -36,6 +43,24 @@ Everything below is receipts, not adjectives. Six claims, each with a transactio
 
 ---
 
+## Dashboard
+
+`pnpm dev:dashboard` — live on-chain policy proof, plus a "try it yourself" panel where you pay for real resources with your own Freighter wallet. Same product, hosted: [nymor.xyz](https://nymor.xyz) (landing + live proof) and [docs.nymor.xyz/dashboard](https://docs.nymor.xyz/dashboard) (walkthrough).
+
+<p align="center">
+  <img src="docs/screenshots/dashboard-policy.png" alt="On-chain policy proof: accepted and rejected transactions against the live spend cap" width="800" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/dashboard-try-it-1.png" alt="Try it yourself: paying for the live XLM/USD price and text summarization resources" width="800" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/dashboard-try-it-2.png" alt="Try it yourself: paying for Stellar account balance and AI image generation" width="800" />
+</p>
+
+---
+
 ## Problem
 
 Every "AI agent pays for things" pitch eventually has to answer one question: what actually stops the agent from spending past its budget? Most answers are "the application checks a number before making the call" — which is real engineering, but it lives in the same trust boundary as the agent itself. A bug in that check, a prompt injection that convinces the agent to route around its own tool, a dependency that silently changes behavior — any of those and the budget was never really a budget, it was a suggestion the agent's own code happened to follow.
@@ -54,7 +79,7 @@ Both layers are real. Only one of them is currently load-bearing for live agent 
 
 ## What Nymor Proves
 
-Every row cites a real test file or a real transaction — the same discipline as a conformance suite, applied to a payments product instead of a protocol implementation.
+Every row cites a real test file or a real transaction — the same discipline as a conformance suite, applied to a payments product instead of a protocol implementation. The full write-up for each claim, with the on-chain-policy walkthrough, lives at [docs.nymor.xyz](https://docs.nymor.xyz) — see [On-chain policy](https://docs.nymor.xyz/on-chain-policy) and [Where things stand](https://docs.nymor.xyz/where-things-stand).
 
 | ID | Claim | Status | Evidence |
 |----|-------|--------|----------|
@@ -62,8 +87,8 @@ Every row cites a real test file or a real transaction — the same discipline a
 | P2 | MCP wiring works over the real stdio protocol, not a direct import | ✅ proven | `mcp.integration.test.ts`, tx [`6347154e…`](https://stellar.expert/explorer/testnet/tx/6347154e932dfeca2116f3b0a46298f94468f506fa613e3b5fa15e08554cf01a) |
 | P3 | Concurrent spend requests can't double-spend past the cap | ✅ proven | 20-way concurrency test, `ledger.test.ts` |
 | P4 | The on-chain smart account authorizes a transfer under its cap | ✅ proven | tx [`e4358552…`](https://stellar.expert/explorer/testnet/tx/e4358552e77b46c87a5ff408bd42cd63efbf26a276e41806148b364a6bd1c4b2), `successful: true` |
-| **P5** | **The on-chain smart account rejects a transfer over its cap — on-chain, not in a test** | ✅ **proven — headline** | tx [`d0f3e128…`](https://stellar.expert/explorer/testnet/tx/d0f3e128df2bd2d2582a532c32e119dedd1957afdaa79f50412eebca76965f74), `Error(Contract, #3221)` `SpendingLimitExceeded` |
-| P6 | Real agent payments are routed through that on-chain cap | ❌ **not wired up (disclosed)** | Buyer signer is still a raw Ed25519 key — `@x402/stellar` has no hook for the custom signature shape OZ smart accounts require. See `packages/policy/README.md`. |
+| **P5** | **The on-chain smart account rejects a transfer over its cap — on-chain, not in a test** | ✅ **proven — headline** | tx [`d0f3e128…`](https://stellar.expert/explorer/testnet/tx/d0f3e128df2bd2d2582a532c32e119dedd1957afdaa79f50412eebca76965f74), `Error(Contract, #3221)` `SpendingLimitExceeded` — see [Read the proof](https://nymor.xyz/#proof) on nymor.xyz |
+| P6 | Real agent payments are routed through that on-chain cap | ❌ **not wired up (disclosed)** | Buyer signer is still a raw Ed25519 key — `@x402/stellar` has no hook for the custom signature shape OZ smart accounts require. See `packages/policy/README.md` and [Where things stand](https://docs.nymor.xyz/where-things-stand). |
 
 ### P5 — the headline transaction
 
@@ -71,9 +96,13 @@ Every row cites a real test file or a real transaction — the same discipline a
 
 Two real transactions prove it, not one: an accepted transfer under the cap, and a rejected one over it. A single passing case only proves the contract doesn't crash — the rejection is what proves it enforces anything.
 
+Full walkthrough, including the undocumented authorization-entry trail: [docs.nymor.xyz/on-chain-policy](https://docs.nymor.xyz/on-chain-policy).
+
 ---
 
 ## Architecture
+
+Full component breakdown and request flow: [docs.nymor.xyz/architecture](https://docs.nymor.xyz/architecture).
 
 ```mermaid
 flowchart TD
@@ -161,6 +190,8 @@ $ RUN_INTEGRATION=1 pnpm test
 
 ## How to Run
 
+Step-by-step walkthrough with troubleshooting: [docs.nymor.xyz/quickstart](https://docs.nymor.xyz/quickstart).
+
 ### Prerequisites
 
 - Node.js 18+, pnpm
@@ -209,11 +240,13 @@ The honest version, researched rather than asserted:
 
 Nymor is smaller and testnet-only. The claim above is narrow on purpose: not "better than Nirium," but "has a real accepted-and-rejected on-chain enforcement transaction pair that a more mature, mainnet-live competitor's own roadmap says isn't built anywhere yet."
 
+Full landscape research: [docs.nymor.xyz/market-and-landscape](https://docs.nymor.xyz/market-and-landscape).
+
 ---
 
 ## Known Gaps, Ranked
 
-If you only fix one thing before trusting this in production, fix the first one.
+If you only fix one thing before trusting this in production, fix the first one. Tracked with priorities at [docs.nymor.xyz/roadmap](https://docs.nymor.xyz/roadmap).
 
 1. **Real agent payments don't route through the on-chain cap yet (P6).** The local ledger is what actually gates spending today. Closing this means forking `@x402/stellar`'s internals — a real, deliberate scope decision, not an oversight.
 2. Only one resource (`xlm-price`) has been paid for through the dashboard's browser flow by a human clicking a real button; the rest are verified via direct payment calls, not click-tested in-browser.
@@ -247,4 +280,4 @@ If you only fix one thing before trusting this in production, fix the first one.
 | `.mcp.json` | Claude Code MCP wiring (no secrets) |
 | `scripts/setup-testnet-accounts.ts` | Generates seller + buyer keypairs |
 
-Each package has its own README with the detail this one summarizes — start there for anything specific.
+Each package has its own README with the detail this one summarizes — start there for anything specific. For the polished version of all of the above, see [docs.nymor.xyz](https://docs.nymor.xyz); for the pitch, see [nymor.xyz](https://nymor.xyz).
