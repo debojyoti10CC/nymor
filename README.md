@@ -20,7 +20,14 @@
 
 <p align="center">
   <a href="https://nymor.xyz"><strong>nymor.xyz</strong></a> — landing page &nbsp;·&nbsp;
-  <a href="https://docs.nymor.xyz"><strong>docs.nymor.xyz</strong></a> — full documentation
+  <a href="https://docs.nymor.xyz"><strong>docs.nymor.xyz</strong></a> — full documentation &nbsp;·&nbsp;
+  <a href="https://youtu.be/RA8k9ouhDtY"><strong>demo video</strong></a>
+</p>
+
+<p align="center">
+  <a href="https://youtu.be/RA8k9ouhDtY">
+    <img src="https://img.youtube.com/vi/RA8k9ouhDtY/maxresdefault.jpg" alt="Nymor demo video — click to watch on YouTube" width="800" />
+  </a>
 </p>
 
 <p align="center">
