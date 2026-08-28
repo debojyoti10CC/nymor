@@ -2,7 +2,7 @@
   "mcpServers": {
     "nymor": {
       "command": "node",
-      "args": ["packages/server/dist/index.js"]
+      "args": ["apps/server/dist/index.js"]
     }
   }
 }

@@ -34,9 +34,9 @@ Unit tests mock the upstream `fetch` call per resource and assert three things f
 
 ## Adding a new resource
 
-1. Add a handler in `src/resources/` following the existing pattern: validate input with `zod`, call the real upstream with a timeout, return real data or a typed `503`.
+1. Add a handler in `src/handlers/` following the existing pattern: validate input with `zod`, call the real upstream with a timeout, return real data or a typed `503`.
 2. Register its route in `src/index.ts` and its price in `src/x402.ts`.
-3. Add it to the registry (`packages/server/src/registry.ts`'s `DEFAULT_REGISTRY`, and `packages/server/nymor.registry.json` if a registry file already exists on disk).
+3. Add it to the registry (`apps/server/src/registry.ts`'s `DEFAULT_REGISTRY`, and `apps/server/data/nymor.registry.json` if a registry file already exists on disk).
 4. Add unit tests in `test/resources.test.ts` following the existing pattern.
 
-If the resource's body/query shape isn't `{ text }`/no-params, `packages/dashboard/src/TryItYourself.tsx`'s `BODY_FIELD_BY_RESOURCE`/`QUERY_PARAMS_BY_RESOURCE` maps need an entry too, or the dashboard's "try it yourself" panel won't know what to send.
+If the resource's body/query shape isn't `{ text }`/no-params, `apps/dashboard/src/TryItYourself.tsx`'s `BODY_FIELD_BY_RESOURCE`/`QUERY_PARAMS_BY_RESOURCE` maps need an entry too, or the dashboard's "try it yourself" panel won't know what to send.

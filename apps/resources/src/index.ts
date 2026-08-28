@@ -2,12 +2,12 @@ import express from "express";
 import { config } from "./config.js";
 import { logger } from "./logger.js";
 import { paymentMiddleware } from "./x402.js";
-import { xlmPriceHandler } from "./resources/xlmPrice.js";
-import { summarizeHandler } from "./resources/summarize.js";
-import { registryHandler } from "./resources/registry.js";
-import { stellarBalanceHandler } from "./resources/stellarBalance.js";
-import { generateImageHandler } from "./resources/generateImage.js";
-import { weatherHandler } from "./resources/weather.js";
+import { xlmPriceHandler } from "./handlers/xlmPrice.js";
+import { summarizeHandler } from "./handlers/summarize.js";
+import { registryHandler } from "./handlers/registry.js";
+import { stellarBalanceHandler } from "./handlers/stellarBalance.js";
+import { generateImageHandler } from "./handlers/generateImage.js";
+import { weatherHandler } from "./handlers/weather.js";
 
 const app = express();
 app.use(express.json());

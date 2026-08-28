@@ -24,7 +24,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.20.1)
 
-  packages/dashboard:
+  apps/dashboard:
     dependencies:
       '@stellar/freighter-api':
         specifier: ^6.0.1
@@ -67,7 +67,7 @@ importers:
         specifier: ^5.4.10
         version: 5.4.21(@types/node@22.20.1)
 
-  packages/resources:
+  apps/resources:
     dependencies:
       '@x402/core':
         specifier: ^2.23.0
@@ -107,7 +107,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.20.1)
 
-  packages/server:
+  apps/server:
     dependencies:
       '@modelcontextprotocol/sdk':
         specifier: ^1.0.0

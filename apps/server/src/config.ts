@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 // MCP clients spawn this process with an unpredictable working directory
 // (varies by client, launch method, OS) — relying on dotenv's default
 // process.cwd() lookup silently loads no .env at all in that case. Anchor
-// to the repo root (two levels up from packages/server/src) explicitly.
+// to the repo root (three levels up from apps/server/src) explicitly.
 loadDotenv({ path: fileURLToPath(new URL("../../../.env", import.meta.url)) });
 
 function required(name: string): string {
@@ -32,8 +32,8 @@ export const config = {
   buyerPrivateKey: required("NYMOR_BUYER_STELLAR_PRIVATE_KEY"),
   sessionCapUsd: Number(process.env.NYMOR_SESSION_CAP_USD ?? "1.00"),
   perCallMaxUsd: Number(process.env.NYMOR_PER_CALL_MAX_USD ?? "0.05"),
-  ledgerPath: process.env.NYMOR_LEDGER_PATH ?? "./nymor.ledger.json",
-  registryPath: process.env.NYMOR_REGISTRY_PATH ?? "./nymor.registry.json",
+  ledgerPath: process.env.NYMOR_LEDGER_PATH ?? "./data/nymor.ledger.json",
+  registryPath: process.env.NYMOR_REGISTRY_PATH ?? "./data/nymor.registry.json",
   logLevel: process.env.NYMOR_LOG_LEVEL ?? "info",
-  logPath: process.env.NYMOR_LOG_PATH ?? "./nymor.log",
+  logPath: process.env.NYMOR_LOG_PATH ?? "./data/nymor.log",
 };

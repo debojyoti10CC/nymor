@@ -6,11 +6,11 @@ process.env.NYMOR_FACILITATOR_URL = "https://example.invalid/facilitator";
 process.env.NYMOR_SELLER_PAYTO_ADDRESS = "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 process.env.OPENROUTER_API_KEY = "sk-or-v1-test-key";
 
-const { xlmPriceHandler } = await import("../src/resources/xlmPrice.js");
-const { summarizeHandler } = await import("../src/resources/summarize.js");
-const { stellarBalanceHandler } = await import("../src/resources/stellarBalance.js");
-const { generateImageHandler } = await import("../src/resources/generateImage.js");
-const { weatherHandler } = await import("../src/resources/weather.js");
+const { xlmPriceHandler } = await import("../src/handlers/xlmPrice.js");
+const { summarizeHandler } = await import("../src/handlers/summarize.js");
+const { stellarBalanceHandler } = await import("../src/handlers/stellarBalance.js");
+const { generateImageHandler } = await import("../src/handlers/generateImage.js");
+const { weatherHandler } = await import("../src/handlers/weather.js");
 
 function mockRes() {
   const res: any = {};

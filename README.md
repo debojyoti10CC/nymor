@@ -79,7 +79,7 @@ The honest fix isn't a bigger try/catch. It's moving the enforcement somewhere t
 
 Nymor is an MCP server that lets any MCP-connected agent discover paid API resources, pay for them in real USDC settled on Stellar via [x402](https://developers.stellar.org/docs/build/agentic-payments/x402), and stay inside a spend cap enforced two ways — a race-safe application ledger, and a Soroban smart-account contract that Stellar itself refuses to let overspend.
 
-Both layers are real. Only one of them is currently load-bearing for live agent payments, and that gap is documented precisely rather than glossed over — see [P6](#what-nymor-proves) below and `packages/policy/README.md`.
+Both layers are real. Only one of them is currently load-bearing for live agent payments, and that gap is documented precisely rather than glossed over — see [P6](#what-nymor-proves) below and `contracts/policy/README.md`.
 
 ---
 
@@ -94,11 +94,11 @@ Every row cites a real test file or a real transaction — the same discipline a
 | P3 | Concurrent spend requests can't double-spend past the cap | ✅ proven | 20-way concurrency test, `ledger.test.ts` |
 | P4 | The on-chain smart account authorizes a transfer under its cap | ✅ proven | tx [`e4358552…`](https://stellar.expert/explorer/testnet/tx/e4358552e77b46c87a5ff408bd42cd63efbf26a276e41806148b364a6bd1c4b2), `successful: true` |
 | **P5** | **The on-chain smart account rejects a transfer over its cap — on-chain, not in a test** | ✅ **proven — headline** | tx [`d0f3e128…`](https://stellar.expert/explorer/testnet/tx/d0f3e128df2bd2d2582a532c32e119dedd1957afdaa79f50412eebca76965f74), `Error(Contract, #3221)` `SpendingLimitExceeded` — see [Read the proof](https://nymor.xyz/#proof) on nymor.xyz |
-| P6 | Real agent payments are routed through that on-chain cap | ❌ **not wired up (disclosed)** | Buyer signer is still a raw Ed25519 key — `@x402/stellar` has no hook for the custom signature shape OZ smart accounts require. See `packages/policy/README.md` and [Where things stand](https://docs.nymor.xyz/where-things-stand). |
+| P6 | Real agent payments are routed through that on-chain cap | ❌ **not wired up (disclosed)** | Buyer signer is still a raw Ed25519 key — `@x402/stellar` has no hook for the custom signature shape OZ smart accounts require. See `contracts/policy/README.md` and [Where things stand](https://docs.nymor.xyz/where-things-stand). |
 
 ### P5 — the headline transaction
 
-`nymor-account`'s spend cap isn't application code deciding to refuse a call — it's `Error(Contract, #3221)` raised from inside the Soroban host's own authorization check, before any transfer executes. Proving it required more than deploying the contract: OZ's own documentation states that the `Delegated` signer scheme "requires manual authorization entry crafting, because it is not returned in a simulation mode," with no reference implementation anywhere in their repository. Getting a real signed transaction through meant reading `soroban-env-host`'s `auth.rs` directly to find the undocumented second authorization entry the host actually requires — full trail in `packages/policy/README.md`.
+`nymor-account`'s spend cap isn't application code deciding to refuse a call — it's `Error(Contract, #3221)` raised from inside the Soroban host's own authorization check, before any transfer executes. Proving it required more than deploying the contract: OZ's own documentation states that the `Delegated` signer scheme "requires manual authorization entry crafting, because it is not returned in a simulation mode," with no reference implementation anywhere in their repository. Getting a real signed transaction through meant reading `soroban-env-host`'s `auth.rs` directly to find the undocumented second authorization entry the host actually requires — full trail in `contracts/policy/README.md`.
 
 Two real transactions prove it, not one: an accepted transfer under the cap, and a rejected one over it. A single passing case only proves the contract doesn't crash — the rejection is what proves it enforces anything.
 
@@ -125,11 +125,13 @@ flowchart TD
 ```
 
 ```
-packages/
+apps/
 ├── resources/    seller side — 5 real paid endpoints + GET /registry
 ├── server/       the product — MCP server (discover, pay_and_call, spend_status, register_resource)
-├── policy/       Soroban smart-account contracts, deployed + proven on testnet
 └── dashboard/    public web app — marketplace, live activity, on-chain policy, try-it-yourself
+contracts/
+└── policy/       Soroban smart-account contracts, deployed + proven on testnet
+scripts/          repo-level tooling (testnet account generation)
 ```
 
 ---
@@ -230,7 +232,7 @@ pnpm dev:resources && pnpm dev:server && pnpm dev:dashboard
 
 ## Facilitator
 
-Nymor settles through [OZ Channels](https://channels.openzeppelin.com), Bearer-authenticated on both testnet and mainnet — skip the key and `nymor-resources` crashes at startup with `no supported payment kinds loaded from any facilitator`. Every wire shape this project relies on (`PaymentRequirements`, the `PAYMENT-REQUIRED` header convention, the settlement response header) was confirmed by inspecting real requests and responses, not assumed from documentation — that discipline is what caught three separate CORS bugs when the dashboard's browser-based payment flow was first wired up (see `packages/dashboard/README.md`).
+Nymor settles through [OZ Channels](https://channels.openzeppelin.com), Bearer-authenticated on both testnet and mainnet — skip the key and `nymor-resources` crashes at startup with `no supported payment kinds loaded from any facilitator`. Every wire shape this project relies on (`PaymentRequirements`, the `PAYMENT-REQUIRED` header convention, the settlement response header) was confirmed by inspecting real requests and responses, not assumed from documentation — that discipline is what caught three separate CORS bugs when the dashboard's browser-based payment flow was first wired up (see `apps/dashboard/README.md`).
 
 ---
 
@@ -279,11 +281,13 @@ If you only fix one thing before trusting this in production, fix the first one.
 
 | Path | Purpose |
 |---|---|
-| `packages/resources` | Seller side — real paid endpoints, gated by x402 |
-| `packages/server` | The MCP server product |
-| `packages/policy` | Soroban smart-account contracts + the real on-chain proof script |
-| `packages/dashboard` | Public web app for humans |
+| `apps/resources` | Seller side — real paid endpoints, gated by x402 |
+| `apps/server` | The MCP server product |
+| `apps/server/data` | Runtime + seed data (registry, ledger, log) — kept out of `src` |
+| `apps/server/scripts` | Standalone one-off scripts (on-chain proof, activity generators) — not shipped |
+| `apps/dashboard` | Public web app for humans |
+| `contracts/policy` | Soroban smart-account contracts + the real on-chain proof script |
 | `.mcp.json` | Claude Code MCP wiring (no secrets) |
 | `scripts/setup-testnet-accounts.ts` | Generates seller + buyer keypairs |
 
-Each package has its own README with the detail this one summarizes — start there for anything specific. For the polished version of all of the above, see [docs.nymor.xyz](https://docs.nymor.xyz); for the pitch, see [nymor.xyz](https://nymor.xyz).
+Each app has its own README with the detail this one summarizes — start there for anything specific. For the polished version of all of the above, see [docs.nymor.xyz](https://docs.nymor.xyz); for the pitch, see [nymor.xyz](https://nymor.xyz).

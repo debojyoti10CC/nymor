@@ -18,7 +18,7 @@ Deployed with the buyer's real key (`GAH7HODDFAEBV4OUBJTCUZXVEW7S6DJ37JNW3CTP3KZ
 
 Two independent layers of proof, not one:
 
-**1. Real on-chain transactions.** `packages/server/scripts/onchain-proof.mjs` submits a real, signed transaction through `nymor-account`'s custom `__check_auth` on testnet — not a simulation, not a local test, an actual transaction the network accepted or rejected:
+**1. Real on-chain transactions.** `apps/server/scripts/onchain-proof.mjs` submits a real, signed transaction through `nymor-account`'s custom `__check_auth` on testnet — not a simulation, not a local test, an actual transaction the network accepted or rejected:
 
 | Case | Amount | Result | Tx hash |
 |---|---|---|---|
