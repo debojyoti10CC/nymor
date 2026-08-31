@@ -136,6 +136,24 @@ scripts/          repo-level tooling (testnet account generation)
 
 ---
 
+## On-chain Identities
+
+Every account and contract Nymor touches on Stellar **testnet**. All keys below are public — secrets (`NYMOR_BUYER_STELLAR_PRIVATE_KEY`, the seller secret) never leave `.env` and are `.gitignore`'d. The seller `payTo` address is generated per-deploy by `pnpm setup:accounts`, so it isn't pinned here.
+
+| Actor | Kind | Address | Role |
+|---|---|---|---|
+| Buyer wallet | Classic account (Ed25519) | `GAH7HODDFAEBV4OUBJTCUZXVEW7S6DJ37JNW3CTP3KZVANWWQ4EEIYRX` | The agent's wallet. Raw key that signs live x402 payments today (P6), and the `Delegated` signer on the smart account below. Same key `nymor-server` pays with. |
+| `nymor-account` | Soroban smart account | [`CAF2HV5N57UDZOMGD2WC4BI472Z3CRSQYQ2V4AKPPP5W4PD4HC4LBKVW`](https://stellar.expert/explorer/testnet/contract/CAF2HV5N57UDZOMGD2WC4BI472Z3CRSQYQ2V4AKPPP5W4PD4HC4LBKVW) | The buyer's smart account. Enforces the spend cap inside `__check_auth` — 1.00 USDC per ~1 day (17,280 ledgers), scoped to the USDC SAC. |
+| `nymor-spending-limit-policy` | Soroban contract | [`CCW6AVTBRVKEDGDDW7CUDALPDLNLUC2M7XBLI56OU65SI2TPBEKJQGHC`](https://stellar.expert/explorer/testnet/contract/CCW6AVTBRVKEDGDDW7CUDALPDLNLUC2M7XBLI56OU65SI2TPBEKJQGHC) | Thin wrapper around OpenZeppelin's audited `stellar_accounts::policies::spending_limit`. `enforce()` panics with `Error(Contract, #3221)` `SpendingLimitExceeded`. |
+| Seller wallet | Classic account | `NYMOR_SELLER_PAYTO_ADDRESS` (per-deploy, `.env`) | Receives x402 settlements for `nymor-resources`. Receives funds only — its secret is used by no running process. |
+| Testnet USDC | Stellar Asset Contract (SAC) | `CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA` | The asset every payment moves. The smart account's context rule is scoped to this contract. |
+| Testnet USDC issuer | Classic account | `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5` | Trustline target for buyer and seller accounts. |
+| Facilitator | OZ Channels | `https://channels.openzeppelin.com/x402/testnet` | Verifies and settles x402 payments. Bearer-authenticated (`NYMOR_OZ_API_KEY`). |
+
+Full deployment parameters and the accepted/rejected proof transactions: [`contracts/policy/README.md`](contracts/policy/README.md).
+
+---
+
 ## The Resource Catalog
 
 | Resource | Method | Price | Upstream |
