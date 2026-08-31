@@ -21,7 +21,8 @@
 <p align="center">
   <a href="https://nymor.xyz"><strong>nymor.xyz</strong></a> — landing page &nbsp;·&nbsp;
   <a href="https://docs.nymor.xyz"><strong>docs.nymor.xyz</strong></a> — full documentation &nbsp;·&nbsp;
-  <a href="https://youtu.be/RA8k9ouhDtY"><strong>demo video</strong></a>
+  <a href="https://youtu.be/RA8k9ouhDtY"><strong>demo video</strong></a> &nbsp;·&nbsp;
+  <a href="https://docs.google.com/spreadsheets/d/1Wpe56vekQiTB6Y0mlUonPI0wmeikqPB3bGUG_mPl9Z4/edit?usp=sharing"><strong>user &amp; transaction sheet</strong></a>
 </p>
 
 <p align="center">
