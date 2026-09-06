@@ -313,5 +313,4 @@ Each app has its own README with the detail this one summarizes — start there 
 
 
 [![M8ven Score](https://m8ven.ai/badge/mcp/debojyoti10cc-nymor-9wmhk0)](https://m8ven.ai/mcp/debojyoti10cc-nymor-9wmhk0)
-
 [![M8ven Score](https://m8ven.ai/badge/mcp/debojyoti10cc-nymor-9wmhk0?v=649a9ca9812ca300c6dbac40755f6225)](https://m8ven.ai/mcp/debojyoti10cc-nymor-9wmhk0)
