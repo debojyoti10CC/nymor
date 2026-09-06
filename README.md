@@ -310,3 +310,6 @@ If you only fix one thing before trusting this in production, fix the first one.
 | `scripts/setup-testnet-accounts.ts` | Generates seller + buyer keypairs |
 
 Each app has its own README with the detail this one summarizes — start there for anything specific. For the polished version of all of the above, see [docs.nymor.xyz](https://docs.nymor.xyz); for the pitch, see [nymor.xyz](https://nymor.xyz).
+
+
+[![M8ven Score](https://m8ven.ai/badge/mcp/debojyoti10cc-nymor-9wmhk0)](https://m8ven.ai/mcp/debojyoti10cc-nymor-9wmhk0)
