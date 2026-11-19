@@ -11,3 +11,5 @@ nymor.log
 *.log
 .turbo/
 .DS_Store
+Thumbs.db
+.vscode/
